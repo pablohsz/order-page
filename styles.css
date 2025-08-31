@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;600&display=swap');
+
+body, * {
+  font-family: 'Lexend', sans-serif !important;
+}
+
+.bubble.left {
+  background: #001427 !important;
+  border-radius: 16px 16px 16px 0 !important;
+  color: #f1f1f1 !important;
+}
+
+.bubble.right {
+  background: linear-gradient(135deg, #016FB9, #026BB1) !important;
+  border-radius: 16px 16px 16px 0 !important;
+  color: #fff !important;
+}
+
+#msg-textarea {
+  background: #E9ECEF !important;
+}
+
+.send-button {
+  background: #016FB9 !important;
+}
+
+#message-input {
+  background: #E9ECEF !important;
+}
+
+#blip-chat-header {
+    background: #016FB9 !important;
+}
+
+#app {
+  background: #FAFAFA !important;
+}

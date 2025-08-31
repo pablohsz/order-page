@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Pedidos - E-commerce</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Icons Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Fontes Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet" />
+    <!-- Stylesheet personalizado -->
+    <style>
+        :root {
+            --bs-primary: #016FB9;
+            --bs-primary-rgb: 1, 111, 185;
+            --bs-secondary: #016FB9;
+            /* cor principal "secondary" */
+            --bs-secondary-rgb: 1, 111, 185;
+        }
+
+        .btn-outline-secondary {
+            --bs-btn-color: #016FB9;
+            --bs-btn-border-color: #016FB9;
+            --bs-btn-hover-bg: #016FB9;
+            --bs-btn-hover-border-color: #016FB9;
+            --bs-btn-hover-color: #fff;
+            /* texto branco no hover */
+        }
+
+        .btn-primary {
+            --bs-btn-bg: #016FB9;
+            --bs-btn-border-color: #016FB9;
+            --bs-btn-hover-bg: #015a94;
+            /* cor um pouco mais escura */
+            --bs-btn-hover-border-color: #015a94;
+        }
+
+        body {
+            font-family: 'Lexend', sans-serif;
+            background-color: #f4f4f4;
+            /* Cor de fundo suave */
+        }
+
+        .sidebar {
+            background-color: #000000;
+            /* Azul escuro para a sidebar */
+            color: white;
+            padding: 20px 0;
+            min-height: 100vh;
+            border-radius: 0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar .nav-link {
+            color: #bdc3c7;
+            /* Cinza claro para links inativos */
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: #353531;
+            /* Azul claro no hover */
+            color: white;
+        }
+
+        .sidebar .nav-link.active {
+            color: white;
+            background-color: #016FB9;
+            /* Azulpara link ativo */
+            font-weight: bold;
+            border-left: 5px solid white;
+        }
+
+        .sidebar-header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .header-section {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .header-section h1 {
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        .header-section p {
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+
+        .filter-buttons .btn {
+            border-radius: 20px;
+            /* Botões de filtro */
+            margin: 5px;
+            font-size: 0.9em;
+            padding: 8px 18px;
+        }
+
+        .filter-buttons .btn-outline-secondary:hover {
+            color: white;
+            background-color: #016FB9;
+        }
+
+        .card-pedido {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .card-pedido .card-header {
+            background-color: #e9ecef;
+            /* Cor de cabeçalho do card */
+            font-weight: bold;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .card-pedido .card-body {
+            padding: 20px;
+        }
+
+        .badge-status {
+            padding: 0.5em 0.8em;
+            border-radius: 0.5rem;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        /* Estilização pros botões individuais dentro do btn-group */
+        .order-action-btn-fixed {
+            min-width: 105px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.85em;
+            padding: 5px 10px;
+            transition: all 0.3s ease;
+            color: #001427 !important;
+            border-color: #001427 !important;
+        }
+
+        .order-action-btn-fixed:hover:not(:disabled) {
+            background-color: #001427 !important;
+            color: white !important;
+            border-color: #001427 !important;
+        }
+
+
+        .order-action-btn-fixed.disabled,
+        .order-action-btn-fixed:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            box-shadow: none;
+            color: #001427 !important;
+            border-color: #001427 !important;
+        }
+
+
+        .order-total-highlight {
+            color: #28a745;
+            /* Cor verde para destaque */
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .order-card-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .order-card-buttons .btn-group>.btn.order-action-btn-fixed:not(:first-child):not(:last-child):not(.dropdown-toggle) {
+            border-radius: 0;
+        }
+
+        .order-card-buttons .btn-group>.btn.order-action-btn-fixed:first-child:not(:last-child):not(.dropdown-toggle) {
+            border-top-left-radius: .375rem;
+            border-bottom-left-radius: .375rem;
+        }
+
+        .order-card-buttons .btn-group>.btn.order-action-btn-fixed:last-child:not(:first-child) {
+            border-top-right-radius: .375rem;
+            border-bottom-right-radius: .375rem;
+        }
+
+        .order-card-buttons .btn-group>.dropdown-toggle.order-action-btn-fixed:not(:first-child) {
+            border-top-right-radius: .375rem;
+            border-bottom-right-radius: .375rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 d-none d-md-block sidebar">
+                <div class="sidebar-header">
+                    <h4 class="mb-0">E-commerce</h4>
+                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="bi bi-house-door-fill me-2"></i> Início
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">
+                            <i class="bi bi-box-seam-fill me-2"></i> Meus Pedidos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="bi bi-person-circle me-2"></i> Minha Conta
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="bi bi-gear-fill me-2"></i> Configurações
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="bi bi-box-arrow-right me-2"></i> Sair
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Conteúdo Principal -->
+            <div class="col-md-9 col-lg-10 main-content">
+                <!-- Seção de cabeçalho -->
+                <div class="header-section">
+                    <h1 class="mb-2">Pedidos</h1>
+                    <p class="lead">Visualize e gerencie todos os seus pedidos em um só lugar. Utilize os filtros para
+                        encontrar rapidamente o que precisa.</p>
+
+                    <!-- Barra de pesquisa -->
+                    <div class="row justify-content-center mb-4">
+                        <div class="col-md-8">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control rounded-start"
+                                    placeholder="Buscar pedidos por número ou item..." aria-label="Buscar pedidos">
+                                <button class="btn btn-primary rounded-end" type="button" id="button-addon2">
+                                    <i class="bi bi-search"></i> Buscar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-buttons">
+                        <button class="btn btn-outline-secondary active" type="button">Todos</button>
+                        <button class="btn btn-outline-success" type="button">Entregues</button>
+                        <button class="btn btn-outline-warning text-dark" type="button">Em Separação</button>
+                        <button class="btn btn-outline-info text-dark" type="button">Em Transporte</button>
+                        <button class="btn btn-outline-danger" type="button">Cancelados</button>
+                    </div>
+                </div>
+
+                <!-- Lista de Pedidos -->
+                <div class="row">
+                    <!-- Card de Pedido 1 -->
+                    <div class="col-12">
+                        <div class="card card-pedido">
+                            <div class="card-header">
+                                Pedido #12345
+                                <span class="badge bg-success badge-status">Entregue</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <p class="mb-1"><strong>Data do Pedido:</strong> 15 de Agosto de 2025</p>
+                                        <p class="mb-1"><strong>Total:</strong> <span class="order-total-highlight">R$
+                                                150,00</span></p>
+                                        <p class="mb-1"><strong>Itens:</strong> Camiseta Esportiva, Tênis de Corrida</p>
+                                    </div>
+                                </div>
+                                <div class="order-card-buttons">
+                                    <div class="btn-group" role="group" aria-label="Ações do Pedido">
+                                        <button type="button"
+                                            class="btn btn-outline-secondary order-action-btn-fixed"><i
+                                                class="bi bi-eye-fill me-1"></i> Detalhes</button>
+                                        <button type="button" class="btn btn-outline-secondary order-action-btn-fixed"
+                                            disabled><i class="bi bi-truck me-1"></i> Acompanhar</button>
+                                        <button type="button" class="btn btn-outline-secondary order-action-btn-fixed"
+                                            disabled><i class="bi bi-x-circle-fill me-1"></i> Cancelar</button>
+                                        <button type="button"
+                                            class="btn btn-outline-secondary order-action-btn-fixed"><i
+                                                class="bi bi-cash-coin me-1"></i> Reembolso</button>
+                                        <button type="button"
+                                            class="btn btn-outline-secondary order-action-btn-fixed"><i
+                                                class="bi bi-archive-fill me-1"></i> Histórico</button>
+                                        <button type="button" class="btn btn-outline-secondary order-action-btn-fixed"
+                                            data-bs-toggle="modal" data-bs-target="#orderSupportModal"><i
+                                                class="bi bi-headset me-1"></i>
+                                            Suporte</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card de Pedido 2 -->
+                    <div class="col-12">
+                        <div class="card card-pedido">
+                            <div class="card-header">
+                                Pedido #67890
+                                <span class="badge bg-warning text-dark badge-status">Em Separação</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <p class="mb-1"><strong>Data do Pedido:</strong> 10 de Agosto de 2025</p>
+                                        <p class="mb-1"><strong>Total:</strong> <span class="order-total-highlight">R$
+                                                250,50</span></p>
+                                        <p class="mb-1"><strong>Itens:</strong> Fone de Ouvido Bluetooth, Smartwatch</p>
+                                    </div>
+                                </div>
+                                <div class="order-card-buttons">
+                                    <div class="btn-group" role="group" aria-label="Ações do Pedido">
+                                        <button type="button"
+                                            class="btn btn-outline-secondary order-action-btn-fixed"><i
+                                                class="bi bi-eye-fill me-1"></i> Detalhes</button>
+                                        <button type="button"
+                                            class="btn btn-outline-secondary order-action-btn-fixed"><i
+                                                class="bi bi-truck me-1"></i> Acompanhar</button>
+                                        <button type="button"
+                                            class="btn btn-outline-secondary order-action-btn-fixed"><i
+                                                class="bi bi-x-circle-fill me-1"></i> Cancelar</button>
+                                        <button type="button" class="btn btn-outline-secondary order-action-btn-fixed"
+                                            disabled><i class="bi bi-cash-coin me-1"></i> Reembolso</button>
+                                        <button type="button"
+                                            class="btn btn-outline-secondary order-action-btn-fixed"><i
+                                                class="bi bi-archive-fill me-1"></i> Histórico</button>
+                                        <button type="button" class="btn btn-outline-secondary order-action-btn-fixed"
+                                            data-bs-toggle="modal" data-bs-target="#orderSupportModal"><i
+                                                class="bi bi-headset me-1"></i>
+                                            Suporte</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card de Pedido 3 -->
+                    <div class="col-12">
+                        <div class="card card-pedido">
+                            <div class="card-header">
+                                Pedido #11223
+                                <span class="badge bg-danger badge-status">Cancelado</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <p class="mb-1"><strong>Data do Pedido:</strong> 01 de Agosto de 2025</p>
+                                        <p class="mb-1"><strong>Total:</strong> <span class="order-total-highlight">R$
+                                                75,99</span></p>
+                                        <p class="mb-1"><strong>Itens:</strong> Livro "Aventura Cósmica"</p>
+                                    </div>
+                                </div>
+                                <div class="order-card-buttons">
+                                    <div class="btn-group" role="group" aria-label="Ações do Pedido">
+                                        <button type="button"
+                                            class="btn btn-outline-secondary order-action-btn-fixed"><i
+                                                class="bi bi-eye-fill me-1"></i> Detalhes</button>
+                                        <button type="button" class="btn btn-outline-secondary order-action-btn-fixed"
+                                            disabled><i class="bi bi-truck me-1"></i> Acompanhar</button>
+                                        <button type="button" class="btn btn-outline-secondary order-action-btn-fixed"
+                                            disabled><i class="bi bi-x-circle-fill me-1"></i> Cancelar</button>
+                                        <button type="button"
+                                            class="btn btn-outline-secondary order-action-btn-fixed"><i
+                                                class="bi bi-cash-coin me-1"></i> Reembolso</button>
+                                        <button type="button"
+                                            class="btn btn-outline-secondary order-action-btn-fixed"><i
+                                                class="bi bi-archive-fill me-1"></i> Histórico</button>
+                                        <button type="button" class="btn btn-outline-secondary order-action-btn-fixed"
+                                            data-bs-toggle="modal" data-bs-target="#orderSupportModal"><i
+                                                class="bi bi-headset me-1"></i>
+                                            Suporte</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card de Pedido 4 -->
+                    <div class="col-12">
+                        <div class="card card-pedido">
+                            <div class="card-header">
+                                Pedido #98765
+                                <span class="badge bg-info text-dark badge-status">Em Transporte</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <p class="mb-1"><strong>Data do Pedido:</strong> 20 de Agosto de 2025</p>
+                                        <p class="mb-1"><strong>Total:</strong> <span class="order-total-highlight">R$
+                                                320,00</span></p>
+                                        <p class="mb-1"><strong>Itens:</strong> Câmera Digital, Cartão SD</p>
+                                    </div>
+                                </div>
+                                <div class="order-card-buttons">
+                                    <div class="btn-group" role="group" aria-label="Ações do Pedido">
+                                        <button type="button"
+                                            class="btn btn-outline-secondary order-action-btn-fixed"><i
+                                                class="bi bi-eye-fill me-1"></i> Detalhes</button>
+                                        <button type="button"
+                                            class="btn btn-outline-secondary order-action-btn-fixed"><i
+                                                class="bi bi-truck me-1"></i> Acompanhar</button>
+                                        <button type="button" class="btn btn-outline-secondary order-action-btn-fixed"
+                                            disabled><i class="bi bi-x-circle-fill me-1"></i> Cancelar</button>
+                                        <button type="button" class="btn btn-outline-secondary order-action-btn-fixed"
+                                            disabled><i class="bi bi-cash-coin me-1"></i> Reembolso</button>
+                                        <button type="button"
+                                            class="btn btn-outline-secondary order-action-btn-fixed"><i
+                                                class="bi bi-archive-fill me-1"></i> Histórico</button>
+                                        <button type="button" class="btn btn-outline-secondary order-action-btn-fixed"
+                                            data-bs-toggle="modal" data-bs-target="#orderSupportModal"><i
+                                                class="bi bi-headset me-1"></i>
+                                            Suporte</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de suporte -->
+    <div class="modal fade" id="orderSupportModal" tabindex="-1" aria-labelledby="orderSupportModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" id="iframe"
+                style="min-width: 300px; max-width: 800px; min-height: 150px; max-height: 90vh; overflow-y: auto">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderSupportModalLabel">Suporte ao Pedido</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Você está solicitando suporte para o pedido de ID: <strong id="modalOrderId"></strong>.</p>
+                    <p>Por favor, descreva seu problema para que possamos ajudá-lo(a) melhor.</p>
+                    <textarea class="form-control" rows="4" placeholder="Descreva seu problema aqui..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary"
+                        onclick="alert('Funcionalidade de envio de suporte ainda não implementada.')">Enviar
+                        Solicitação</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  Bootstrap 5.3 js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+
+
+</body>
+
+</html>
